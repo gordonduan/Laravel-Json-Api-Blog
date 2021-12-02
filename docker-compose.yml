@@ -1,0 +1,61 @@
+version: "3.7"
+
+x-laravel-env: &laravel-env
+  APP_NAME: "Service"
+  APP_ENV: "development"
+  APP_DEBUG: "true"
+  DB_HOST: "mysql"
+  DB_DATABASE: "database"
+  DB_USERNAME: "root"
+  DB_PASSWORD: "root"
+  LOG_CHANNEL: "stderr"
+  QUEUE_CONNECTION: "sync"
+  REDIS_HOST: "redis"
+
+services:
+  server:
+    image: orbitremit.io/development/{service-name}-service:latest
+    build:
+      context: .
+      target: environment
+    command: ['./artisan', 'serve', '--port', '80', '--host', '0.0.0.0', '--no-reload']
+    networks:
+      development-stack:
+        aliases:
+          - service.service-name.v1.docker
+    volumes:
+      - ./src:/srv/application
+    environment:
+      <<: *laravel-env
+
+  composer:
+    image: orbitremit.io/development/{service-name}-service:latest
+    build:
+      context: .
+      target: environment
+    entrypoint: ["composer"]
+    volumes:
+      - ~/.composer:/root/composer
+      - ./src:/srv/application
+    environment:
+      <<: *laravel-env
+    networks:
+      development-stack:
+
+  artisan:
+    image: orbitremit.io/development/{service-name}-service:latest
+    build:
+      context: .
+      target: environment
+    entrypoint: ["php", "artisan"]
+    volumes:
+      - ./src:/srv/application
+    environment:
+      <<: *laravel-env
+    networks:
+      development-stack:
+
+networks:
+  development-stack:
+    external:
+      name: ${DEVELOPMENT_STACK_NETWORK:-developmentstack_default}

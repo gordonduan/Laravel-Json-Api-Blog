@@ -1,0 +1,5 @@
+**/.DS_Store
+src/tests/coverage/
+src/vendor/
+src/.php_cs.cache
+src/.phpunit.result.cache
