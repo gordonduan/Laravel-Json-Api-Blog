@@ -1,11 +1,11 @@
 version: "3.7"
 
 x-laravel-env: &laravel-env
-  APP_NAME: "Service"
+  APP_NAME: "Blog Service"
   APP_ENV: "development"
   APP_DEBUG: "true"
   DB_HOST: "mysql"
-  DB_DATABASE: "database"
+  DB_DATABASE: "blog"
   DB_USERNAME: "root"
   DB_PASSWORD: "root"
   LOG_CHANNEL: "stderr"
@@ -14,7 +14,6 @@ x-laravel-env: &laravel-env
 
 services:
   server:
-    image: orbitremit.io/development/{service-name}-service:latest
     build:
       context: .
       target: environment
@@ -22,14 +21,14 @@ services:
     networks:
       development-stack:
         aliases:
-          - service.service-name.v1.docker
+          - service.blog-service.v1.docker
     volumes:
       - ./src:/srv/application
     environment:
       <<: *laravel-env
 
   composer:
-    image: orbitremit.io/development/{service-name}-service:latest
+    image: gcr.io/or-docker-images/laravel:v2
     build:
       context: .
       target: environment
@@ -43,7 +42,7 @@ services:
       development-stack:
 
   artisan:
-    image: orbitremit.io/development/{service-name}-service:latest
+    image: gcr.io/or-docker-images/laravel:v2
     build:
       context: .
       target: environment
