@@ -15,5 +15,11 @@ use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
  */
 
 JsonApiRoute::server('v1') ->resources(function ($server) {
-    $server->resource('posts', JsonApiController::class);
+    $server->resource('posts', JsonApiController::class)
+        ->readOnly()
+        ->relationships(function ($relations) {
+            $relations->hasOne('author')->readOnly();
+            $relations->hasMany('comments')->readOnly();
+            $relations->hasMany('tags')->readOnly();
+        });
 });
