@@ -32,8 +32,7 @@ class Server extends BaseServer
     protected function allSchemas(): array
     {
         return [
-            // Enter schema class reference e.g.
-            // Coupons\CouponSchema::class,
+            Posts\PostSchema::class,
         ];
     }
 

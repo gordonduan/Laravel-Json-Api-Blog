@@ -1,5 +1,8 @@
 <?php
 
+use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
+use LaravelJsonApi\Laravel\Http\Controllers\JsonApiController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -11,11 +14,6 @@
 |
  */
 
-JsonApiRoute::server('v1')
-    ->namespace('Api\V1')
-    ->resources(function ($server) {
-
-        // Define your resource routes here
-        // e.g. $server->resource('coupons')->only('read', 'index', 'create', 'delete');
-    }
-);
+JsonApiRoute::server('v1') ->resources(function ($server) {
+    $server->resource('posts', JsonApiController::class);
+});
